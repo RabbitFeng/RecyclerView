@@ -1,6 +1,5 @@
-package com.example.recyclerview.util;
+package com.rabbit.recycler;
 
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,38 +7,36 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.recyclerview.R;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
-public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonAdapter.ViewHolder> {
+public abstract class RecyclerViewAdapter<T> extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
 
-    private static final String TAG = CommonAdapter.class.getName();
+    private static final String TAG = "RecyclerViewAdapter";
+
+    /**
+     * 数据源
+     */
     private List<T> mData;
 
-    public CommonAdapter(List<T> mData) {
+    public RecyclerViewAdapter(List<T> mData) {
         this.mData = mData;
     }
 
     public abstract int getLayoutId(int viewType);
 
-    public abstract void onBind(@NonNull ViewHolder holder, T t, int position);
+    public abstract void onBind(@NonNull ViewHolder holder, @Nullable T t, int position);
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        return null;
-        Log.d(TAG, "onCreateViewHolder: called");
         return ViewHolder.get(parent, getLayoutId(viewType));
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Log.d(TAG, "onBindViewHolder: called");
         onBind(holder, mData.get(position), position);
     }
 
@@ -49,14 +46,14 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonAdapte
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private static final String TAG = ViewHolder.class.getName();
+        private static final String TAG = "ViewHolder";
         private final View mConvertView;
         private final SparseArray<View> mViews;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            mConvertView = itemView;
-            mViews = new SparseArray<>();
+            this.mConvertView = itemView;
+            this.mViews = new SparseArray<>();
         }
 
         public static ViewHolder get(ViewGroup parent, int layoutRes) {
@@ -75,11 +72,9 @@ public abstract class CommonAdapter<T> extends RecyclerView.Adapter<CommonAdapte
             return (T) view;
         }
 
-        public void setText(int id, String text){
+        public void setText(int id, String text) {
             TextView t = getView(id);
             t.setText(text);
         }
-
     }
-
 }

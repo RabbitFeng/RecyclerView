@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.rabbit.recycler;
 
 import android.content.Context;
 

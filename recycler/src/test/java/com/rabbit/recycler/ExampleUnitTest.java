@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.rabbit.recycler;
 
 import org.junit.Test;
 

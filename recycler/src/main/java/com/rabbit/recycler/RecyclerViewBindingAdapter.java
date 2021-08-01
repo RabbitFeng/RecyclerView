@@ -1,4 +1,4 @@
-package com.example.recycler;
+package com.rabbit.recycler;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -12,12 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public abstract class AbstractBindingAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<AbstractBindingAdapter.BindingHolder<B>> {
+@SuppressWarnings("unused")
+public abstract class RecyclerViewBindingAdapter<T, B extends ViewDataBinding> extends RecyclerView.Adapter<RecyclerViewBindingAdapter.BindingHolder<B>> {
     private static final String TAG = "AbstractBindingAdapter";
     /**
      * 数据源
      */
-    private List<T> list;
+    protected List<T> mData;
+
+    public RecyclerViewBindingAdapter(@Nullable List<T> data) {
+        this.mData = data;
+    }
 
     /**
      * 获取布局
@@ -35,7 +40,7 @@ public abstract class AbstractBindingAdapter<T, B extends ViewDataBinding> exten
      * @param t        数据
      * @param position 位置
      */
-    public abstract void onBind(@NonNull BindingHolder<B> holder, T t, int position);
+    public abstract void onBind(@NonNull BindingHolder<B> holder, @Nullable T t, int position);
 
     /**
      * 更新数据
@@ -54,12 +59,12 @@ public abstract class AbstractBindingAdapter<T, B extends ViewDataBinding> exten
 
     @Override
     public void onBindViewHolder(@NonNull BindingHolder<B> holder, int position) {
-        onBind(holder, list.get(position), position);
+        onBind(holder, mData.get(position), position);
     }
 
     @Override
     public int getItemCount() {
-        return list.size()  ;
+        return mData == null ? 0 : mData.size();
     }
 
     public static class BindingHolder<B extends ViewDataBinding> extends RecyclerView.ViewHolder {
